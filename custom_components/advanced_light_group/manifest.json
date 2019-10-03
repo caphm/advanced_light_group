@@ -1,0 +1,12 @@
+{
+  "domain": "advanced_light_group",
+  "name": "Advanced Light Group",
+  "documentation": "https://github.com/caphm/advanced_light_group",
+  "dependencies": [],
+  "config_flow": false,
+  "codeowners": [
+    "@caphm"
+  ],
+  "requirements": [],
+  "homeassistant": "0.96.0"
+}
