@@ -217,7 +217,7 @@ class AdvancedLightGroup(light.Light):
         if ATTR_FLASH in kwargs:
             data[ATTR_FLASH] = kwargs[ATTR_FLASH]
 
-        if not self._is_on() or not data:
+        if not self.is_on or not data:
             data[ATTR_ENTITY_ID] = self._main_lights
         else:
             _, data[ATTR_ENTITY_ID] = self._get_states_and_on_states()

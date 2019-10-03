@@ -34,4 +34,4 @@ Key | Type | Required | Default | Description
 -- | -- | -- | -- | --
 `name` | `string` | `False` | `Advanced Light Group` | The name of the resulting light entity
 `main_lights` | `list` | `True` |  | Which lights are considered main lights
-`aux_lights` | `string` | `False` | `blueprint` | Which lights are considered auxiliary lights
+`auxiliary_lights` | `list` | `False` |  | Which lights are considered auxiliary lights
