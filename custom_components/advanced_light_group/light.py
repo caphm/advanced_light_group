@@ -220,7 +220,7 @@ class AdvancedLightGroup(light.Light):
         if not self.is_on or not data:
             data[ATTR_ENTITY_ID] = self._main_lights
         else:
-            _, data[ATTR_ENTITY_ID] = self._get_states_and_on_states()
+            data[ATTR_ENTITY_ID] = self._get_turned_on_entities()
 
         await self.hass.services.async_call(
             light.DOMAIN, light.SERVICE_TURN_ON, data, blocking=True
@@ -236,6 +236,9 @@ class AdvancedLightGroup(light.Light):
         await self.hass.services.async_call(
             light.DOMAIN, light.SERVICE_TURN_OFF, data, blocking=True
         )
+
+    def _get_turned_on_entities(self):
+        return [state.entity_id for _, state in self._get_states_and_on_states()]
 
     def _get_states_and_on_states(self):
         """Return a list of all states and a list of all on states"""
