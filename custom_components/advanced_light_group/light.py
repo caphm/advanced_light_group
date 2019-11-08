@@ -238,7 +238,7 @@ class AdvancedLightGroup(light.Light):
         )
 
     def _get_turned_on_entities(self):
-	_, on_states = self._get_states_and_on_states()
+        _, on_states = self._get_states_and_on_states()
         return [state.entity_id for state in on_states]
 
     def _get_states_and_on_states(self):
