@@ -94,6 +94,7 @@ class AdvancedLightGroup(light.Light):
         self._aux_lights = aux_lights  # type: List[str]
         self._entity_ids = main_lights + aux_lights  # type: List[str]
         self._is_on = False  # type: bool
+        self._main_lights_on = False # type: bool
         self._available = False  # type: bool
         self._brightness = None  # type: Optional[int]
         self._hs_color = None  # type: Optional[Tuple[float, float]]
@@ -217,7 +218,7 @@ class AdvancedLightGroup(light.Light):
         if ATTR_FLASH in kwargs:
             data[ATTR_FLASH] = kwargs[ATTR_FLASH]
 
-        if not self.is_on or not data:
+        if not self._is_on or not data:
             data[ATTR_ENTITY_ID] = self._main_lights
         else:
             data[ATTR_ENTITY_ID] = self._get_turned_on_entities()
@@ -237,6 +238,13 @@ class AdvancedLightGroup(light.Light):
             light.DOMAIN, light.SERVICE_TURN_OFF, data, blocking=True
         )
 
+    async def async_toggle(self, **kwargs):
+        """Toggle state based on main lights"""
+        if self._main_lights_on:
+            await self.async_turn_off(**kwargs)
+        else:
+            await self.async_turn_on(**kwargs)
+
     def _get_turned_on_entities(self):
         _, on_states = self._get_states_and_on_states()
         return [state.entity_id for state in on_states]
@@ -250,8 +258,10 @@ class AdvancedLightGroup(light.Light):
     async def async_update(self):
         """Query all members and determine the light group state."""
         states, on_states = self._get_states_and_on_states()
+        turned_on_lights = self._get_turned_on_entities()
 
         self._is_on = len(on_states) > 0
+        self._main_lights_on = any(main_light in turned_on_lights for main_light in self._main_lights)
         self._available = any(state.state != STATE_UNAVAILABLE for state in states)
 
         self._brightness = _reduce_attribute(on_states, ATTR_BRIGHTNESS)
