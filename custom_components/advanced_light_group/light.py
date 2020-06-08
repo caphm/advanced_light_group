@@ -82,7 +82,7 @@ async def async_setup_platform(
     )
 
 
-class AdvancedLightGroup(light.Light):
+class AdvancedLightGroup(light.LightEntity):
     """Representation of a light group."""
 
     def __init__(
